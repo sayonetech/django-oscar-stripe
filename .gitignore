@@ -1,0 +1,4 @@
+*.pyc
+.idea
+oscar_stripe.egg-info/
+dist/

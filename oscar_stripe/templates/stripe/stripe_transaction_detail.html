@@ -1,0 +1,57 @@
+{% extends 'dashboard/layout.html' %}
+{% load currency_filters %}
+{% load i18n %}
+
+{% block title %}
+    {% blocktrans with reference=stripe_transaction.stripe_transaction_id %}
+        Stripe Transaction {{ reference }}
+    {% endblocktrans %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="{% url 'stripe-transaction-list' %}">{% trans "Stripe" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">
+            {% blocktrans with reference=stripe_transaction.stripe_transaction_id %}
+                Transaction {{ reference }}
+            {% endblocktrans %}
+        </li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}
+    {% blocktrans with reference=stripe_transaction.stripe_transaction_id %}
+        Transaction {{ reference }}
+    {% endblocktrans %}
+{% endblock %}
+
+{% block dashboard_content %}
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr><th>{% trans "Stripe transaction ID" %}</th><td>{{ stripe_transaction.stripe_transaction_id }}</td></tr>
+            <tr><th>{% trans "Dated On" %}</th><td>{{ stripe_transaction.transaction_date }}</td></tr>
+            <tr><th>{% trans "Description" %}</th><td>{{ stripe_transaction.description }}</td></tr>
+            <tr><th>{% trans "Transaction type" %}</th><td>{{ stripe_transaction.transaction_type}}</td></tr>
+            <tr><th>{% trans "Amount" %}</th><td>{{ stripe_transaction.amount }}</td></tr>
+            <tr><th>{% trans "Currency" %}</th><td>{{ stripe_transaction.currency }}</td></tr>
+        </tbody>
+    </table>
+
+    <!--{% if show_form_buttons %}-->
+        <!--<h2>{% trans "Actions" %}</h2>-->
+        <!--<form method="post" action=".">-->
+            <!--{% csrf_token %}-->
+            <!--<button class="btn btn-success {% if not txn.can_be_captured %}disable{% endif %}" type="submit" name="action" value="capture">{% trans "Capture" %}</button>-->
+            <!--<button class="btn btn-danger {% if not txn.can_be_voided %}disable{% endif %}" type="submit" name="action" value="void">{% trans "Void" %}</button>-->
+            <!--<button class="btn btn-danger {% if not txn.can_be_credited %}disabled{% endif %}" type="submit" name="action" value="credit">{% trans "Credit" %}</button>-->
+        <!--</form>-->
+    <!--{% endif %}-->
+
+{% endblock dashboard_content %}
